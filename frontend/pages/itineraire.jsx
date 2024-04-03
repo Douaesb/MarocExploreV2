@@ -98,7 +98,6 @@ function Itineraire() {
     const file = e.target.files[0];
     setItineraireInfo({ ...itineraireInfo, image: file });
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,10 +113,13 @@ function Itineraire() {
       formData.append("user_id", userId);
       destinations.slice(0, destinationCount).forEach((destination, index) => {
         formData.append(`destinations[${index}][nom]`, destination.nom);
-        formData.append(`destinations[${index}][logement]`, destination.logement);
+        formData.append(
+          `destinations[${index}][logement]`,
+          destination.logement
+        );
         formData.append(`destinations[${index}][liste]`, destination.liste);
       });
-  
+
       const response = await axios.post(
         "http://127.0.0.1:8000/api/itineraire",
         formData,
@@ -134,7 +136,26 @@ function Itineraire() {
       console.error("Erreur lors de la création de l'itinéraire:", error);
     }
   };
-  
+
+  const handleDelete = async (itineraireId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(
+        `http://127.0.0.1:8000/api/itineraires/${itineraireId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setItineraire(
+        itineraires.filter((itineraire) => itineraire.id !== itineraireId)
+      );
+      console.log("Itinéraire supprimé avec succès");
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'itinéraire:", error);
+    }
+  };
 
   return (
     <>
@@ -175,50 +196,53 @@ function Itineraire() {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              <form className="p-4 md:p-5" onSubmit={handleSubmit} encType="multipart/form-data">
+              <form
+                className="p-4 md:p-5"
+                onSubmit={handleSubmit}
+                encType="multipart/form-data"
+              >
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="flex flex-col  w-full col-span-2 ">
-                  <label className=" flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-    <svg
-      className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 20 16"
-    >
-      <path
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-      />
-    </svg>
-    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-      <span className="font-semibold">Click to upload</span>{" "}
-      or drag and drop
-    </p>
-    <p className="text-xs text-gray-500 dark:text-gray-400">
-      SVG, PNG, JPG or GIF (MAX. 800x400px)
-    </p>
-    {itineraireInfo.image && (
-      <img
-        src={URL.createObjectURL(itineraireInfo.image)}
-        alt="Selected Image"
-        className="w-full max-h-48 object-cover mt-4"
-      />
-    )}
-  </div>
-  <input
-    id="dropzone-file"
-    type="file"
-    accept="image/*"
-    className="hidden"
-    onChange={handleImageChange}
-  />
-</label>
-
+                    <label className=" flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg
+                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 20 16"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                          />
+                        </svg>
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>{" "}
+                          or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          SVG, PNG, JPG or GIF (MAX. 800x400px)
+                        </p>
+                        {itineraireInfo.image && (
+                          <img
+                            src={URL.createObjectURL(itineraireInfo.image)}
+                            alt="Selected Image"
+                            className="w-full max-h-48 object-cover mt-4"
+                          />
+                        )}
+                      </div>
+                      <input
+                        id="dropzone-file"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageChange}
+                      />
+                    </label>
                   </div>
                   <div className="col-span-2 ">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -419,8 +443,8 @@ function Itineraire() {
               key={itineraire.id}
               className="card shadow border-2 p-4 border-gray-200 rounded-md"
             >
-              <div className="flex justify-center" >
-              <img src={itineraire.image} className="w-3/5" alt="image" />
+              <div className="flex justify-center">
+                <img src={itineraire.image} className="w-3/5" alt="image" />
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
@@ -434,7 +458,13 @@ function Itineraire() {
                 <div className="flex justify-between">
                   <span>{itineraire.duree}</span>
                   <span>{itineraire.user.name}</span>
-                </div> 
+                </div>
+                <button
+                  className="bg-red-300"
+                  type="button"
+                  onClick={() => handleDelete(itineraire.id)}>
+                  supprimer
+                </button>
               </div>
             </div>
           ))}
