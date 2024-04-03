@@ -22,7 +22,7 @@ class ItineraireController extends Controller
     }
     public function indexAll()
     {
-        $itineraires = Itineraire::with('destinations')->get();
+        $itineraires = Itineraire::with('user','categorie','destinations')->get();
 
         return response()->json([
             'status' => 'success',
@@ -104,7 +104,7 @@ class ItineraireController extends Controller
 
         $titre = $request->input('titre');
 
-        $itineraires = Itineraire::where('titre', 'like', "%$titre%")->get();
+        $itineraires = Itineraire::where('titre', 'like', "%$titre%")->with('user','categorie')->get();
 
         return response()->json([
             'status' => 'success',
@@ -115,8 +115,8 @@ class ItineraireController extends Controller
     public function filter(Request $request)
     {
         $request->validate([
-            'categorie_id' => 'sometimes|exists:categories,id', 
-            'duree' => 'sometimes|string|max:255',
+            'categorie_id' => 'nullable|exists:categories,id', 
+            'duree' => 'nullable|string|max:255',
         ]);
     
         $categorieId = $request->input('categorie_id');
@@ -124,15 +124,15 @@ class ItineraireController extends Controller
     
         $query = Itineraire::query();
     
-        if ($categorieId) {
+        if ($categorieId !== null) {
             $query->where('categorie_id', $categorieId);
         }
     
-        if ($duree) {
+        if ($duree !== null) {
             $query->where('duree', $duree);
         }
     
-        $itineraires = $query->get();
+        $itineraires = $query->with('user','categorie')->get();
     
         return response()->json([
             'status' => 'success',

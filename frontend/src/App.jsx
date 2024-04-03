@@ -7,6 +7,7 @@ import Navbar from '../components/header';
 import { ReactDOM} from 'react'
 import {BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom'
 import Itineraire from '../pages/itineraire';
+import Accueil from '../pages/accueil';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
      <Routes>
       {/* <Route index element={ <Home /> }/> */}
       <Route path='/home' element={ <Home /> }/>
+      <Route path='/accueil' element={ <Accueil /> }/>
       <Route path='/register' element={ <Register /> }/>
       <Route path='/login' element={ <Login /> }/>
       <Route path='/itineraire' element={ <Itineraire /> }/>
