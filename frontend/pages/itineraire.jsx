@@ -23,7 +23,6 @@ function Itineraire() {
           "http://127.0.0.1:8000/api/itinerairee",
           { headers }
         );
-        console.log(response.data);
         setItineraire(response.data.itineraires);
       } catch (error) {
         console.error("Error fetching itineraire data", error);
@@ -420,30 +419,22 @@ function Itineraire() {
               key={itineraire.id}
               className="card shadow border-2 p-4 border-gray-200 rounded-md"
             >
-              <img src={itineraire.image} className="w-full" alt="image" />
+              <div className="flex justify-center" >
+              <img src={itineraire.image} className="w-3/5" alt="image" />
+              </div>
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                   <h3>{itineraire.titre}</h3>
-                  <h4>{itineraire.categorie.name}Categorie</h4>
+                  <h4>{itineraire.categorie.name}</h4>
                 </div>
                 <div className="flex justify-between">
-                  <span>{itineraire.debut}debut de l'itineraire</span>
-                  <span>{itineraire.fin}fin de l'itineraire</span>
+                  <span>{itineraire.debut}</span>
+                  <span>{itineraire.fin}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>{itineraire.duree}Durée de l'itineraire</span>
-                  <span>{itineraire.user.name}User Name</span>
-                </div>
-                {itineraire.destinations.map((destination) => (
-                  <div key={destination.id}>
-                    <h4>Destination</h4>
-                    <div>
-                      <span>Nom: {destination.nom}</span>
-                      <span>Logement: {destination.logement}</span>
-                      <span>Liste: {destination.liste}</span>
-                    </div>
-                  </div>
-                ))}
+                  <span>{itineraire.duree}</span>
+                  <span>{itineraire.user.name}</span>
+                </div> 
               </div>
             </div>
           ))}

@@ -57,11 +57,12 @@ class ItineraireController extends Controller
             ]);
             $userId = $request->user_id;
             $imagePath = $request->file('image')->store('images', 'public');
+            $imageUrl = asset('storage/' . $imagePath);
 
             $itineraire = Itineraire::create([
                 'titre' => $request->titre,
                 'categorie_id' => $request->categorie_id,
-                'image' => $imagePath,
+                'image' => $imageUrl,
                 'debut' => $request->debut,
                 'fin' => $request->fin,
                 'duree' => $request->duree,
