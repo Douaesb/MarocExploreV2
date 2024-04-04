@@ -267,6 +267,13 @@ class ItineraireController extends Controller
                 ], 404); 
             }
 
+            if ($user->itineraire()->where('itineraire_id', $itineraireId)->exists()) {
+            return response()->json([
+                'status' => 'exists',
+                'message' => 'Itinéraire déjà ajouté à la liste à visualiser.',
+            ], 200);
+        }
+
             $user->itineraire()->attach($itineraireId, ['created_at' => now(), 'updated_at' => now()]);
 
             return response()->json([
@@ -288,7 +295,7 @@ class ItineraireController extends Controller
     try {
         $user = Auth::user();
 
-        $itineraires = $user->itineraire()->with('destinations')->get();
+        $itineraires = $user->itineraire()->with('user','categorie','destinations')->get();
         
         return response()->json([
             'status' => 'success',

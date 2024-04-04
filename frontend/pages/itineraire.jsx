@@ -157,6 +157,64 @@ function Itineraire() {
     }
   };
 
+  useEffect(() => {
+    const fetchUserItineraries = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/liste-a-visualiser",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const userItineraries = response.data.itineraires;
+        setItineraire((prevItineraires) =>
+          prevItineraires.map((itineraire) => {
+            const isAddedToList = userItineraries.some(
+              (userItinerary) => userItinerary.id === itineraire.id
+            );
+            return { ...itineraire, isAddedToList };
+          })
+        );
+      } catch (error) {
+        console.error("Error fetching user itineraries:", error);
+      }
+    };
+    fetchUserItineraries();
+  }, []);
+
+  const handleAddToList = async (itineraireId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/liste-a-visualiser/${itineraireId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data.message);
+      setItineraire((prevItineraires) =>
+        prevItineraires.map((itineraire) =>
+          itineraire.id === itineraireId
+            ? { ...itineraire, isAddedToList: true }
+            : itineraire
+        )
+      );
+    } catch (error) {
+      console.error("Error adding itinerary to the list:", error);
+    }
+  };
+
+
+
+
+  
+
   return (
     <>
       <Navbar />
@@ -443,6 +501,18 @@ function Itineraire() {
               key={itineraire.id}
               className="card shadow border-2 p-4 border-gray-200 rounded-md"
             >
+               <button
+                  onClick={() => handleAddToList(itineraire.id)}
+                  id={`addToListButton_${itineraire.id}`}
+                  className={`px-4 py-2 mb-2 ${
+                    itineraire.isAddedToList
+                      ? "bg-green-500 cursor-not-allowed"
+                      : "bg-blue-500 hover:bg-blue-600"
+                  } text-white rounded-md focus:outline-none`}
+                  disabled={itineraire.isAddedToList}
+                >
+                  {itineraire.isAddedToList ? "Added" : "Add to List"}
+                </button>
               <div className="flex justify-center">
                 <img src={itineraire.image} className="w-3/5" alt="image" />
               </div>
@@ -462,7 +532,8 @@ function Itineraire() {
                 <button
                   className="bg-red-300"
                   type="button"
-                  onClick={() => handleDelete(itineraire.id)}>
+                  onClick={() => handleDelete(itineraire.id)}
+                >
                   supprimer
                 </button>
               </div>
