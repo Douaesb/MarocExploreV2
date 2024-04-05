@@ -9,6 +9,7 @@ import {BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom
 import Itineraire from '../pages/itineraire';
 import Accueil from '../pages/accueil';
 import ListeAVisiter from '../pages/Liste';
+import ModifyItineraire from '../pages/modifierItineraire';
 
 
 function App() {
@@ -23,8 +24,7 @@ function App() {
       <Route path='/login' element={ <Login /> }/>
       <Route path='/itineraire' element={ <Itineraire /> }/>
       <Route path='/ListeAVisiter' element={ <ListeAVisiter /> }/>
-
-
+      <Route path='/modifierItineraire/:itineraireId' element={ <ModifyItineraire /> }/>
       {/* <Route path="/register" element={<Navigate to="/" replace />} /> */}
      </Routes>
     </BrowserRouter>

@@ -168,6 +168,40 @@ class ItineraireController extends Controller
         ]);
     }
 
+    public function edit($id)
+{
+    try {
+        $itineraire = Itineraire::with('destinations')->find($id);
+
+        if (!$itineraire) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Itinéraire non trouvé.',
+            ], 404);
+        }
+
+        if ($itineraire->user_id !== auth()->id()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Vous n\'êtes pas autorisé à modifier cet itinéraire.',
+            ], 403);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'itineraire' => $itineraire,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Une erreur s\'est produite lors de la récupération de l\'itinéraire à éditer.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
     public function update(Request $request, $id)
     {
         try {
@@ -175,7 +209,7 @@ class ItineraireController extends Controller
             $request->validate([
                 'titre' => 'required|string|max:255',
                 'categorie_id' => 'required|exists:categories,id',
-                'image' => 'required|string',
+                'image' => 'image|file|mimes:jpeg,png,jpg,gif|max:2048',
                 'debut' => 'required',
                 'fin' => 'required',
                 'duree' => 'required|string',
@@ -200,11 +234,15 @@ class ItineraireController extends Controller
                     'message' => 'Vous n\'êtes pas autorisé à modifier cet itinéraire.',
                 ], 403);
             }
-
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('images', 'public');
+                $imageUrl = asset('storage/' . $imagePath);
+                $itineraire->image = $imageUrl;
+            }
             $itineraire->update([
                 'titre' => $request->titre,
                 'categorie_id' => $request->categorie_id,
-                'image' => $request->image,
+                // 'image' => $imageUrl,
                 'debut' => $request->debut,
                 'fin' => $request->fin,
                 'duree' => $request->duree,

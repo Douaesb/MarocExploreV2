@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/header";
+import { Link } from "react-router-dom";
 
 function Itineraire() {
   const [user, setUser] = useState(null);
@@ -495,7 +496,7 @@ function Itineraire() {
         >
           Créer Itinéraire
         </button>
-        <div className="grid grid-cols-4 border-2 border-blue-200 shadow-lg p-10 w-4/5 mx-auto rounded-md gap-4 mb-4">
+        <div className="grid grid-cols-3 border-2 border-blue-200 shadow-lg p-10 w-4/5 mx-auto rounded-md gap-4 mb-4">
           {itineraires.map((itineraire) => (
             <div
               key={itineraire.id}
@@ -535,6 +536,14 @@ function Itineraire() {
                   onClick={() => handleDelete(itineraire.id)}
                 >
                   supprimer
+                </button>
+                <button
+                  className="bg-blue-300"
+                  type="button"
+
+                >
+                  <Link to={`/modifierItineraire/${itineraire.id}`}>Modifier</Link>
+                  
                 </button>
               </div>
             </div>
