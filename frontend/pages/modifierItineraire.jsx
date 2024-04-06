@@ -37,6 +37,8 @@ function ModifyItineraire() {
     e.preventDefault();
     setDestinationCount(destinationCount + 1);
     setDestinations([...destinations, { nom: "", logement: "", liste: "" }]);
+    console.log("Destinations after adding:", destinations);
+
   };
 
   const handleInputChange = (index, e) => {
@@ -52,10 +54,19 @@ function ModifyItineraire() {
     setItineraireInfo({ ...itineraireInfo, [name]: value });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setItineraireInfo({
+      ...itineraireInfo,
+      image: file,
+      imageUrl: URL.createObjectURL(file),
+    });
+  };
+
   const [itineraireInfo, setItineraireInfo] = useState({
     titre: "",
     categorie_id: "",
-    image: null,
+    image: "",
     debut: "",
     fin: "",
     duree: "",
@@ -93,34 +104,44 @@ function ModifyItineraire() {
     e.preventDefault();
     try {
       const userId = localStorage.getItem("userId");
-      const { image, ...formData } = itineraireInfo;
-      formData.titre = itineraireInfo.titre;
-console.log(formData.titre)
-      const response = await axios.put(
+      const formData = new FormData();
+      formData.append("titre", itineraireInfo.titre);
+      formData.append("categorie_id", itineraireInfo.categorie_id);
+      formData.append("debut", itineraireInfo.debut);
+      formData.append("fin", itineraireInfo.fin);
+      formData.append("duree", itineraireInfo.duree);
+      formData.append("user_id", userId);
+      
+      if (itineraireInfo.image instanceof File) {
+        formData.append("image", itineraireInfo.image);
+      }
+  
+      destinations.slice(0, destinationCount).forEach((destination, index) => {
+        formData.append(`destinations[${index}][nom]`, destination.nom);
+        formData.append(`destinations[${index}][logement]`, destination.logement);
+        formData.append(`destinations[${index}][liste]`, destination.liste);
+      });
+      console.log("Destinations before submission:", destinations);
+
+      const response = await axios.post(
         `http://127.0.0.1:8000/api/itineraires/update/${itineraireId}`,
-        { ...formData, user_id: userId },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
-        
       );
-      console.log(response);  
   
-
       console.log("Itinéraire modifié avec succès:", response.data);
       window.location.href = "/itineraire";
     } catch (error) {
       console.error("Erreur lors de la modification de l'itinéraire:", error);
     }
   };
+  
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setItineraireInfo({ ...itineraireInfo, image: file });
-  };
   return (
     <>
       <Navbar />
@@ -171,27 +192,27 @@ console.log(formData.titre)
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         SVG, PNG, JPG or GIF (MAX. 800x400px)
                       </p>
-                      {itineraireInfo.image ? (
+                      {itineraireInfo.imageUrl ? (
                         <img
-                          src={itineraireInfo.image}
+                          src={itineraireInfo.imageUrl}
                           alt="Selected Image"
                           className="w-full max-h-48 object-cover mt-4"
                         />
                       ) : (
                         <img
-                          // src={URL.createObjectURL(itineraireInfo.image)}
+                          src={itineraireInfo.image}
                           alt=" Image"
                           className="w-full max-h-48 object-cover mt-4"
                         />
                       )}
                     </div>
                     <input
-                        id="dropzone-file"
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageChange}
-                      />
+                      id="dropzone-file"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                    />
                   </label>
                 </div>
                 <div className="col-span-2 ">

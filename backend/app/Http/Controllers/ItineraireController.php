@@ -213,7 +213,7 @@ class ItineraireController extends Controller
                 'debut' => 'required',
                 'fin' => 'required',
                 'duree' => 'required|string',
-                'destinations' => 'required|array|min:2',
+                'destinations' => 'required|array',
                 'destinations.*.nom' => 'required|string|max:255',
                 'destinations.*.logement' => 'required|string|max:255',
                 'destinations.*.liste' => 'required|string|max:255',
