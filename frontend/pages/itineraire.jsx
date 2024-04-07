@@ -120,7 +120,7 @@ function Itineraire() {
         );
         formData.append(`destinations[${index}][liste]`, destination.liste);
       });
-      console.log(formData)
+      console.log(formData);
       const response = await axios.post(
         "http://127.0.0.1:8000/api/itineraire",
         formData,
@@ -210,11 +210,6 @@ function Itineraire() {
       console.error("Error adding itinerary to the list:", error);
     }
   };
-
-
-
-
-  
 
   return (
     <>
@@ -502,18 +497,18 @@ function Itineraire() {
               key={itineraire.id}
               className="card shadow border-2 p-4 border-gray-200 rounded-md"
             >
-               <button
-                  onClick={() => handleAddToList(itineraire.id)}
-                  id={`addToListButton_${itineraire.id}`}
-                  className={`px-4 py-2 mb-2 ${
-                    itineraire.isAddedToList
-                      ? "bg-green-500 cursor-not-allowed"
-                      : "bg-blue-500 hover:bg-blue-600"
-                  } text-white rounded-md focus:outline-none`}
-                  disabled={itineraire.isAddedToList}
-                >
-                  {itineraire.isAddedToList ? "Added" : "Add to List"}
-                </button>
+              <button
+                onClick={() => handleAddToList(itineraire.id)}
+                id={`addToListButton_${itineraire.id}`}
+                className={`px-4 py-2 mb-2 ${
+                  itineraire.isAddedToList
+                    ? "bg-green-500 cursor-not-allowed"
+                    : "bg-blue-500 hover:bg-blue-600"
+                } text-white rounded-md focus:outline-none`}
+                disabled={itineraire.isAddedToList}
+              >
+                {itineraire.isAddedToList ? "Added" : "Add to List"}
+              </button>
               <div className="flex justify-center">
                 <img src={itineraire.image} className="w-3/5" alt="image" />
               </div>
@@ -537,14 +532,20 @@ function Itineraire() {
                 >
                   supprimer
                 </button>
-                <button
-                  className="bg-blue-300"
-                  type="button"
-
-                >
-                  <Link to={`/modifierItineraire/${itineraire.id}`}>Modifier</Link>
-                  
+                <button className="bg-blue-300" type="button">
+                  <Link to={`/modifierItineraire/${itineraire.id}`}>
+                    Modifier
+                  </Link>
                 </button>
+                  <button className="bg-yellow-300" type="button">
+                    <Link
+                      to={`/destination/${itineraire.id}?titre=${
+                        itineraire.titre
+                      }&destinations=${JSON.stringify(itineraire.destinations)}`}
+                    >
+                      View Destinations
+                    </Link>
+                  </button>
               </div>
             </div>
           ))}
