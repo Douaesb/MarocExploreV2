@@ -89,9 +89,11 @@ function ModifyItineraire() {
           }
         );
         const { itineraire } = response.data;
-        const { destinations } = itineraire;
-        setItineraireInfo(itineraire);
+        const { destinations, categorie_id } = itineraire;
+         setItineraireInfo(itineraire);
         setDestinations(destinations);
+        setSelectedCategoryId(categorie_id);
+
       } catch (error) {
         console.error("Error fetching itinerary details:", error);
       }
