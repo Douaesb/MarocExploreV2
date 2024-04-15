@@ -484,6 +484,8 @@ function Itineraire() {
             Welcome, {user ? user.name : "Guest"}!
           </h2>
         </div>
+        <div className="flex justify-between ">
+
         <button
           className="bg-blue-300 p-4 rounded-lg mb-4 border-2 border-blue-500 ml-40"
           data-modal-target="crud-modal"
@@ -491,6 +493,14 @@ function Itineraire() {
         >
           Créer Itinéraire
         </button>
+        <a
+                    href="/ListeAVisiter"
+                    className="bg-yellow-200 p-4 rounded-lg mb-4 border-2 border-yellow-500 mr-40 "
+                  >
+                    voir liste a Visiter
+                  </a>
+        </div>
+
         <div className="grid grid-cols-3 border-2 border-blue-200 shadow-lg p-10 w-4/5 mx-auto rounded-md gap-4 mb-4">
           {itineraires.map((itineraire) => (
             <div
