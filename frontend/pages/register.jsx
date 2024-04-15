@@ -83,11 +83,13 @@ function Register() {
               <div className="!mt-10">
             <button
               type="submit"
-              className="min-w-[150px] py-3 px-4 text-sm font-semibold rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+              className=" mb-4 min-w-[150px] py-3 px-4 text-sm font-semibold rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
             >
               Register
             </button>
           </div>
+          <span>Already have an account <a href="/" className="underline text-blue-700">Login here</a></span>
+
             </div>
           </div>
           

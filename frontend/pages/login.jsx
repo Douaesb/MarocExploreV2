@@ -76,11 +76,12 @@ function Login() {
               <div className="!mt-10">
             <button
               type="submit"
-              className="min-w-[150px] py-3 px-4 text-sm font-semibold rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+              className=" mb-4 min-w-[150px] py-3 px-4 text-sm font-semibold rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
             >
               Login
             </button>
           </div>
+            <span>Don't have an account <a href="/Register" className="underline text-blue-700">Register here</a></span>
             </div>
           </div>
           

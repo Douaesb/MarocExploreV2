@@ -11,7 +11,7 @@ function Navbar() {
         "Content-Type": "application/json",
       };
       await axios.post("http://127.0.0.1:8000/api/logout",{}, { headers });
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -20,7 +20,7 @@ function Navbar() {
     <header className="py-4 px-4 sm:px-10 z-50 min-h-[70px]">
       <div className="relative flex flex-wrap items-center gap-4">
         <a href="">
-          <img src="" alt="logo" className="w-36" />
+          <img src="./src/assets/voyage.jpg" alt="logo" className=" w-16 h-16" />
         </a>
         <div className="flex ml-auto lg:order-1">
           <button
@@ -44,14 +44,14 @@ function Navbar() {
           id="collapseMenu"
           className="lg:!flex lg:ml-12 lg:space-x-6 max-lg:space-y-6 max-lg:hidden max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[250px] max-lg:top-0 max-lg:left-0 max-lg:p-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto max-lg:z-50"
         >
-          <li className="max-lg:border-b max-lg:py-2 px-3">
+          {/* <li className="max-lg:border-b max-lg:py-2 px-3">
             <a
               href=""
               className="lg:hover:text-blue-600 text-blue-600 block font-bold transition-all"
             >
               Home
             </a>
-          </li>
+          </li> */}
 
           <li className="max-lg:border-b max-lg:py-2 px-3">
             <a

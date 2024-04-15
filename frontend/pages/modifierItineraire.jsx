@@ -36,9 +36,10 @@ function ModifyItineraire() {
   const addDestination = (e) => {
     e.preventDefault();
     setDestinationCount(destinationCount + 1);
-    setDestinations([...destinations, { nom: "", logement: "", liste: "" }]);
-    console.log("Destinations after adding:", destinations);
-
+    setDestinations((prevDestinations) => [
+      ...prevDestinations,
+      { nom: "", logement: "", liste: "" },
+    ]);
   };
 
   const handleInputChange = (index, e) => {
@@ -71,9 +72,7 @@ function ModifyItineraire() {
     fin: "",
     duree: "",
   });
-  const [destinations, setDestinations] = useState([
-    { nom: "", logement: "", liste: "" },
-  ]);
+  const [destinations, setDestinations] = useState("");
 
   useEffect(() => {
     const fetchItineraireDetails = async () => {
@@ -90,10 +89,13 @@ function ModifyItineraire() {
         );
         const { itineraire } = response.data;
         const { destinations, categorie_id } = itineraire;
-         setItineraireInfo(itineraire);
-        setDestinations(destinations);
+        setItineraireInfo(itineraire);
+        setDestinations(
+          destinations.length > 0
+            ? destinations
+            : [{ nom: "", logement: "", liste: "" }]
+        );
         setSelectedCategoryId(categorie_id);
-
       } catch (error) {
         console.error("Error fetching itinerary details:", error);
       }
@@ -107,22 +109,26 @@ function ModifyItineraire() {
     try {
       const userId = localStorage.getItem("userId");
       const formData = new FormData();
+
       formData.append("titre", itineraireInfo.titre);
       formData.append("categorie_id", itineraireInfo.categorie_id);
       formData.append("debut", itineraireInfo.debut);
       formData.append("fin", itineraireInfo.fin);
       formData.append("duree", itineraireInfo.duree);
       formData.append("user_id", userId);
-      
+
       if (itineraireInfo.image instanceof File) {
         formData.append("image", itineraireInfo.image);
       }
-  
-      destinations.slice(0, destinationCount).forEach((destination, index) => {
+      destinations.forEach((destination, index) => {
+        formData.append(`destinations[${index}][id]`, destination.id);
         formData.append(`destinations[${index}][nom]`, destination.nom);
         formData.append(`destinations[${index}][logement]`, destination.logement);
         formData.append(`destinations[${index}][liste]`, destination.liste);
       });
+      
+      console.log(destinations);
+     
       console.log("Destinations before submission:", destinations);
 
       const response = await axios.post(
@@ -135,14 +141,13 @@ function ModifyItineraire() {
           },
         }
       );
-  
-      console.log("Itinéraire modifié avec succès:", response.data);
+
+      console.log("Itinéraire modifié avec succès:", response);
       window.location.href = "/itineraire";
     } catch (error) {
       console.error("Erreur lors de la modification de l'itinéraire:", error);
     }
   };
-  
 
   return (
     <>
@@ -310,6 +315,16 @@ function ModifyItineraire() {
                         Destination {index + 1}
                       </h4>
                       <div className="col-span-2 sm:col-span-1">
+                      <input
+                          type="hidden"
+                          name={`id-${index}`}
+                          id={`id-${index}`}
+                          value={destination.id}
+                          onChange={(e) => handleInputChange(index, e)}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder=""
+                          required=""
+                        />
                         <label
                           htmlFor={`nom-${index}`}
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

@@ -249,8 +249,10 @@ class ItineraireController extends Controller
             ]);
 
             $destinations = [];
+            // return response()->json(['data'=>$request->destinations[0]]);
             foreach ($request->destinations as $destinationData) {
-                if (isset($destinationData['id'])) {
+
+                if ($destinationData['id']) {
 
                     $destination = Destination::where('itineraire_id', $itineraire->id)
                         ->where('id', $destinationData['id'])

@@ -19,10 +19,10 @@
       <BrowserRouter>
       <Routes>
         {/* <Route index element={ <Home /> }/> */}
-        <Route path='/home' element={ <Home /> }/>
+        <Route index element={ <Login /> }/>
         <Route path='/accueil' element={ <Accueil /> }/>
         <Route path='/register' element={ <Register /> }/>
-        <Route path='/login' element={ <Login /> }/>
+        {/* <Route path='/login' element={ <Login /> }/> */}
         <Route path='/itineraire' element={ <Itineraire /> }/>
         <Route path='/ListeAVisiter' element={ <ListeAVisiter /> }/>
         <Route path='/modifierItineraire/:itineraireId' element={ <ModifyItineraire /> }/>
