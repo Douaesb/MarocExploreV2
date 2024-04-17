@@ -51,7 +51,7 @@ function Itineraire() {
   const [destinations, setDestinations] = useState([
     { nom: "", logement: "", liste: "" },
   ]);
-  const [destinationCount, setDestinationCount] = useState(1);
+  const [destinationCount, setDestinationCount] = useState(2);
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
@@ -485,23 +485,32 @@ function Itineraire() {
           </h2>
         </div>
         <div className="flex justify-between ">
+          <div className="flex gap-4">
 
-        <button
-          className="bg-blue-300 p-4 rounded-lg mb-4 border-2 border-blue-500 ml-40"
-          data-modal-target="crud-modal"
-          data-modal-toggle="crud-modal"
-        >
-          Créer Itinéraire
-        </button>
-        <a
-                    href="/ListeAVisiter"
-                    className="bg-yellow-200 p-4 rounded-lg mb-4 border-2 border-yellow-500 mr-40 "
-                  >
-                    voir liste a Visiter
-                  </a>
+          <button
+            className="bg-blue-300 p-4 rounded-lg mb-4 border-2 border-blue-500 ml-40"
+            data-modal-target="crud-modal"
+            data-modal-toggle="crud-modal"
+          >
+            Créer Itinéraire
+          </button>
+          <a
+            href="/ListeAVisiter"
+            className="bg-yellow-200 p-4 rounded-lg mb-4 border-2 border-yellow-500 mr-40 "
+          >
+            voir liste a Visiter
+          </a>
+          </div>
+
+          <a
+            href="/"
+            className=" p-4 rounded-lg mb-4 border-2 border-blue-500 mr-40 "
+          >
+            voir tous les itineraires 
+          </a>
         </div>
 
-        <div className="grid grid-cols-3 border-2 border-blue-200 shadow-lg p-10 w-4/5 mx-auto rounded-md gap-4 mb-4">
+        <div className="grid lg:grid-cols-4 grid-cols-1 border-2 border-blue-200 shadow-lg p-6 w-4/5 mx-auto rounded-md gap-4 mb-4">
           {itineraires.map((itineraire) => (
             <div
               key={itineraire.id}
@@ -524,18 +533,39 @@ function Itineraire() {
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
-                  <h3>{itineraire.titre}</h3>
-                  <h4>{itineraire.categorie.name}</h4>
+                  <h4 className="font-bold mt-2">
+                    Categorie : {itineraire.categorie.name}
+                  </h4>
+                </div>
+                <h3>
+                  {" "}
+                  <span className="font-semibold underline">Titre</span> :{" "}
+                  {itineraire.titre}
+                </h3>
+                <div className="flex justify-between">
+                  <span className="font-semibold">
+                  Début : 
+                    <span className="font-normal"> {itineraire.debut}</span>
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>{itineraire.debut}</span>
-                  <span>{itineraire.fin}</span>
+                  <span className="font-semibold">
+                  Fin : 
+                    <span className="font-normal"> {itineraire.fin}</span>
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>{itineraire.duree}</span>
-                  <span>{itineraire.user.name}</span>
+                  <span className="font-semibold">
+                  Durée : 
+                    <span className="font-normal"> {itineraire.duree}</span>
+                  </span>
                 </div>
-                <div className="flex justfiy-evenly gap-2">
+                <span className="font-semibold">
+                  User name :
+                  <span className="text-blue-500"> {itineraire.user.name}</span>
+                </span>
+                
+                <div className="flex flex-shrink justfiy-evenly gap-2">
                   <a
                     href={`/modifierItineraire/${itineraire.id}`}
                     className=" rounded-lg w-fit px-4 flex items-center"
@@ -601,7 +631,7 @@ function Itineraire() {
                     </svg>
                   </a>
 
-                  <a
+                  <a title="voir les destinations"
                     href={`/destination/${itineraire.id}?titre=${
                       itineraire.titre
                     }&destinations=${encodeURIComponent(
@@ -609,7 +639,33 @@ function Itineraire() {
                     )}`}
                     className="rounded-lg w-fit px-4  flex items-center"
                   >
-                    <svg width="30px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#e1d019" stroke="#e1d019" stroke-width="26.624000000000002"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M149.333333 85.333333h725.333334v853.333334H149.333333z" fill="#fafbbc"></path><path d="M277.333333 554.666667h85.333334v85.333333h-85.333334zM277.333333 384h85.333334v85.333333h-85.333334zM277.333333 725.333333h85.333334v85.333334h-85.333334zM277.333333 213.333333h85.333334v85.333334h-85.333334zM448 554.666667h298.666667v85.333333H448zM448 384h298.666667v85.333333H448zM448 725.333333h298.666667v85.333334H448zM448 213.333333h298.666667v85.333334H448z" fill="#e1d019"></path></g></svg>
+                    <svg
+                      width="30px"
+                      viewBox="0 0 1024 1024"
+                      class="icon"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="#e1d019"
+                      stroke="#e1d019"
+                      stroke-width="26.624000000000002"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          d="M149.333333 85.333333h725.333334v853.333334H149.333333z"
+                          fill="#fafbbc"
+                        ></path>
+                        <path
+                          d="M277.333333 554.666667h85.333334v85.333333h-85.333334zM277.333333 384h85.333334v85.333333h-85.333334zM277.333333 725.333333h85.333334v85.333334h-85.333334zM277.333333 213.333333h85.333334v85.333334h-85.333334zM448 554.666667h298.666667v85.333333H448zM448 384h298.666667v85.333333H448zM448 725.333333h298.666667v85.333334H448zM448 213.333333h298.666667v85.333334H448z"
+                          fill="#e1d019"
+                        ></path>
+                      </g>
+                    </svg>
                   </a>
 
                   {/* <button className=" rounded-lg w-fit px-4" type="button">

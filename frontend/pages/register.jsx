@@ -21,7 +21,7 @@ function Register() {
       );
       console.log("Registration successful:", response.data);
       setFormData({ name: "", email: "", password: "" });
-      window.location.href = "/home";
+      window.location.href = "/login";
 
     } catch (error) {
       console.error("Registration failed:", error.response.data);

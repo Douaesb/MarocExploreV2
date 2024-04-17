@@ -24,7 +24,7 @@ function Navbar() {
         </a>
         <div className="flex ml-auto lg:order-1">
           <button
-            className="px-6 py-3 rounded-xl text-white bg-cyan-700 transition-all hover:bg-cyan-800"
+            className="px-6 py-3 rounded-xl text-white bg-blue-500 transition-all hover:bg-cyan-800"
             onClick={handleLogout}
           >
             Logout
