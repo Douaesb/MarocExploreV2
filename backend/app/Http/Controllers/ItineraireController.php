@@ -104,7 +104,7 @@ class ItineraireController extends Controller
 
         $titre = $request->input('titre');
 
-        $itineraires = Itineraire::where('titre', 'like', "%$titre%")->with('user','categorie')->get();
+        $itineraires = Itineraire::where('titre', 'like', "%$titre%")->with('user','categorie','destinations')->get();
 
         return response()->json([
             'status' => 'success',
@@ -132,7 +132,7 @@ class ItineraireController extends Controller
             $query->where('duree', $duree);
         }
     
-        $itineraires = $query->with('user','categorie')->get();
+        $itineraires = $query->with('user','categorie','destinations')->get();
     
         return response()->json([
             'status' => 'success',

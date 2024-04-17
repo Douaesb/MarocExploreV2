@@ -63,10 +63,12 @@ function Accueil() {
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [destinations, setDestination] = useState([]);
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
+console.log(itineraires);
   const handleSearch = async () => {
     try {
       let response;
@@ -78,11 +80,14 @@ function Accueil() {
           {
             params: {
               titre: searchQuery,
+              destinations: destinations,
             },
           }
         );
       }
       setItineraire(response.data.itineraires);
+      setDestination(response.data.itineraires.destinations);
+      console.log(response.data.itineraires.destinations)
     } catch (error) {
       console.error("Error searching itineraires:", error);
     }
